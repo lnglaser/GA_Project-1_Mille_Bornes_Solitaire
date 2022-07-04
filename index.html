@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mille Bornes Solitaire</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <!-- Needed:
+    - Player hand area
+    - Player score indicator (pile or just a number)
+    - Draw pile
+    - Discard pile
+    -  -->
+    <!-- <div></div> -->
+
+    <div class="w3-container">Play area
+    <div class="message area">Game message</div>
+      <div class="score-counter" id="player1-score">Miles: 0</div>
+      <div class="turnCount">Number of turns left: </div>
+      <div class="draw-pile">Draw pile</div>
+      <div class="discard-pile">Discard pile</div>
+      <div class="player-hand">
+        your cards
+        <div class="player-card" id="card0">empty</div>
+        <div class="player-card" id="card1">empty</div>
+        <div class="player-card" id="card2">empty</div>
+        <div class="player-card" id="card3">empty</div>
+        <div class="player-card" id="card4">empty</div>
+        <div class="player-card" id="card5">empty</div>
+      </div>
+    </div>
+    <script type="text/javascript" src="script.js"></script>
+  </body>
 </html>

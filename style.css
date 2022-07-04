@@ -1,0 +1,43 @@
+body{
+    background-color: aqua;
+    display: flex;
+}
+
+div .play-area{
+    
+    justify-content:center
+    
+}
+
+div .player-hand {
+    flex-direction: row;
+    align-items: flex-end;
+    border: 2px solid black;
+}
+
+div .player-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    border: 2px solid black;
+    font-size: 20px;
+    margin: 20px;
+
+}
+
+.score-counter {
+    border: 2px solid black;
+}
+
+.w3-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.discard-pile {
+    border: 2px solid black;
+}
+
+.draw-pile{
+    border: 2px solid black;
+}
