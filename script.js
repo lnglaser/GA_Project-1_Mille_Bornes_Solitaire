@@ -180,10 +180,10 @@ function playerTurn(){
 drawCard();
 
 //Event listener section - add event listeners for various buttons (play, discard for each card)
-newFunction();
+// newFunction();
 
-function newFunction() {
-    playButtons.forEach(playerTurn); {
-        playButtons[i].addEventListener("click", playCard);
-    }
-}
+// function newFunction() {
+//     playButtons.forEach(playerTurn); {
+//         playButtons[i].addEventListener("click", playerTurn);
+//     }
+// }
