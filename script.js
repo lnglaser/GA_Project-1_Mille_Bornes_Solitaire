@@ -48,14 +48,24 @@ let playerHand = [];
 let discardPile = [];
 let cardDraw = null;
 let turnsRemaining = 20;
-let playButtons = document.querySelectorAll(".playButton");
+//Variables that interact with DOM elements
+let discardButton = document.querySelectorAll(".discardButton")
+let playerCardsOnScreen = document.querySelectorAll(".player-card");//playerCards needs to be an array of objects? These can't be objects because it's just used to reference DOM elements
 //Had to set empty values for the object in the battlePile array to test the computerTurn function
+let playerCards = [
+    {value: "",
+    type: ""
+}
+]
 let battlePile = [
     {value: "Green light",
     type:""}
 ];
 let playerScore = 0;
-
+let selectedCard = {
+    value: "",
+    type: ""
+}
 //This function will build both the player deck containing miles and remedies, and the computer deck containing the hazards.
 function buildDeck ()  {
     for (i = 0; i < cardTypes.length; i++){
@@ -81,7 +91,7 @@ function buildDeck ()  {
 }
 
 buildDeck();
-//Card shuffling tutorial found here
+//Card shuffling tutorial found here: https://www.programiz.com/javascript/examples/shuffle-card
 //Studied documentation on Math.random (https://www.w3schools.com/js/js_random.asp) and Math.floor (https://www.w3schools.com/jsref/jsref_floor.asp)
 function shuffleDeck(){
     //shuffling player's deck
@@ -112,9 +122,10 @@ function dealCards(){
         playerDeck.shift();
     }
     console.log("Player's hand: ");
-    for(i = 0; i<6; i++){
+    for(i = 0; i < 6; i++){
         console.log(playerHand[i].value)
     }
+    
     document.getElementById('0').innerText = playerHand[0].value;
     document.getElementById('1').innerText = playerHand[1].value;
     document.getElementById('2').innerText = playerHand[2].value;
@@ -132,15 +143,20 @@ dealCards ();
 function drawCard(){
     cardDraw = playerDeck[0];
     playerDeck.shift();
-    document.getElementById('6').innerText = cardDraw.value;
+    document.getElementById('6').innerText = (cardDraw.value);
     console.log("Drawn card: "+JSON.stringify(cardDraw))
 }
 
 //removes selected card from play and adds it to the discard pile.
+
+
 function discardCard(){
-    
+    console.log("Discard button clicked")
 }
 
+for(i = 0; i < 7; i++){;
+    discardButton[i].addEventListener('click', discardCard);
+}
 //Plays card to the table - either adds to score (mileage) or plays a remedy on top of a hazard.
 // function playCard(e){
 //     e.target.
@@ -163,7 +179,10 @@ function computerTurn(){
 }
 computerTurn();
 //Player should be able to draw a card, and either play a card to the table or discard.
-function playerTurn(){
+function playerTurn(){ //remember to call at the end
+    drawCard();
+    discardCard();
+
 //Player:
 // 1) Draws a card, and MUST either
 // 2) a) play a card to the table
@@ -172,12 +191,35 @@ function playerTurn(){
 //    b) discard a card
 // should be able to play card by mousing over and clicking, possibly add buttons for discarding instead.
 //Might be nice to add a hand sorting function that automatically keeps your cards in order.
+}
 
+function chooseCard(){
+    for (i = 0; i < 7; i++){
+        playerCardsOnScreen[i].addEventListener('click', e => {
+            selectedCard.value = e.target.innerText;
+            let cardChoice = selectedCard.value;
+            if(cardChoice === '25' || cardChoice === '50' || cardChoice === '75' || cardChoice === '100' || cardChoice === '200'){
+                selectedCard.value = parseInt(selectedCard.value);
+                selectedCard.type = "Mileage";
+                console.log(selectedCard.type)
+            } else if(cardChoice === 'Spare tire' || cardChoice === 'Gas' || cardChoice === 'Repairs' || cardChoice === 'Green light'){
+                selectedCard.type = "Remedy";
+                console.log(selectedCard.type)
+            }
+            console.log("Selected card: "+JSON.stringify(selectedCard))
+        })
+    }
+
+    
+//might have to build separate functions for playing and discarding?
 //"If you chose to play a remedy card, check if it's the correct one and play it to the battle pile. (If it's not, throw an error message.)"
 //"If you chose to play a mileage card, check if the battle pile has a Green light card on top. (If not, throw an error message."
-    drawCard();
+
+} chooseCard();
+function discardCard(){
+    
 }
-drawCard();
+//drawCard();
 
 //Event listener section - add event listeners for various buttons (play, discard for each card)
 // newFunction();
@@ -186,4 +228,5 @@ drawCard();
 //     playButtons.forEach(playerTurn); {
 //         playButtons[i].addEventListener("click", playerTurn);
 //     }
-// }
+//}
+playerTurn();
