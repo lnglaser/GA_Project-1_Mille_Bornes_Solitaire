@@ -49,7 +49,11 @@ let discardPile = [];
 let cardDraw = null;
 let turnsRemaining = 20;
 let playButtons = document.querySelectorAll(".playButton");
-let battlePile = [];
+//Had to set empty values for the object in the battlePile array to test the computerTurn function
+let battlePile = [
+    {value: "Green light",
+    type:""}
+];
 let playerScore = 0;
 
 //This function will build both the player deck containing miles and remedies, and the computer deck containing the hazards.
@@ -142,13 +146,13 @@ function discardCard(){
 //     e.target.
 //}
 
-//This function will generate a random number, and based on that number, either draw a hazard card from the computer deck and play it on the battle pile, or pass its turn.
+//This function will generate a random number, and based on that number, either draw a hazard card from the computer deck and play it on the battle pile, or pass its turn. (Might possibly be able to make this number adjustable to change the difficulty of the game.)
 function computerTurn(){
     let i = Math.round(Math.random())
     if(i === 0){
         console.log("Clear road ahead")
         document.querySelector(".message-area").innerText = "Clear road ahead"
-    } else if (i === 1){
+    } else if (i === 1 && battlePile[0].value === "Green light"){
         document.querySelector(".battle-pile").innerText = ("Battle pile: "+JSON.stringify(computerDeck[0].value))
         battlePile.unshift(computerDeck[0]);
         computerDeck.shift();
@@ -169,11 +173,17 @@ function playerTurn(){
 // should be able to play card by mousing over and clicking, possibly add buttons for discarding instead.
 //Might be nice to add a hand sorting function that automatically keeps your cards in order.
 
+//"If you chose to play a remedy card, check if it's the correct one and play it to the battle pile. (If it's not, throw an error message.)"
+//"If you chose to play a mileage card, check if the battle pile has a Green light card on top. (If not, throw an error message."
     drawCard();
 }
 drawCard();
 
 //Event listener section - add event listeners for various buttons (play, discard for each card)
-// playButtons.forEach(playerTurn){
-//     playButtons[i].addEventListener("click", playCard)
-// }
+newFunction();
+
+function newFunction() {
+    playButtons.forEach(playerTurn); {
+        playButtons[i].addEventListener("click", playCard);
+    }
+}
