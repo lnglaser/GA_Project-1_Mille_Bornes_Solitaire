@@ -44,7 +44,9 @@ const remedyTypes = [
 
 let computerDeck = [];
 let playerDeck = [];
-let playerHand = [];
+let playerHand = [
+
+];
 let discardPile = [];
 let cardDraw = null;
 let turnsRemaining = 20;
@@ -54,11 +56,11 @@ let playButton = document.querySelector(".playButton")
 console.log(discardButton);
 let playerCardsOnScreen = document.querySelectorAll(".player-card");//playerCards needs to be an array of objects? These can't be objects because it's just used to reference DOM elements
 //Had to set empty values for the object in the battlePile array to test the computerTurn function
-let playerCards = [
-    {value: "",
-    type: ""
-}
-]
+// let playerCards = [
+//     {value: "",
+//     type: ""
+// }
+// ]
 //If battle pile is changed from array to single object, you must make changes in the computerTurn function
 let battlePile =
     {value: "",
@@ -78,17 +80,17 @@ function buildDeck ()  {
     for (i = 0; i < cardTypes.length; i++){
         if(i == 0) {
             for (j = 0; j < mileValues.length; j++){
-                let card = {value: mileValues[j], type: cardTypes[i]};
+                let card = {value: mileValues[j], type: cardTypes[i], isInPlayerHand: false};
                 playerDeck.push(card);
             }
         } else if (i == 2){
             for (j = 0; j < remedyTypes.length; j++){
-                let card = {value: remedyTypes[j], type: cardTypes[i]};
+                let card = {value: remedyTypes[j], type: cardTypes[i], isInPlayerHand: false};
                 playerDeck.push(card);
             }
         } else if (i == 1){
             for (j = 0; j < hazardTypes.length; j++){
-                let card = {value: hazardTypes[j], type: cardTypes[i]};
+                let card = {value: hazardTypes[j], type: cardTypes[i], isInPlayerHand: false};
                 computerDeck.push(card);
             }
         }
@@ -125,12 +127,13 @@ shuffleDeck();
 //Assigns values of top 6 cards in the player deck to corresponding positiions in the player hand, and removes those objects from the top of the deck array.
 function dealCards(){
     for (i = 0; i < 6; i++){
-        playerHand.push(playerDeck[i]);
-        playerDeck.shift();
+        playerHand.push(playerDeck.shift());
+        
+        playerHand[i].isInPlayerHand = true;
     }
     console.log("Player's hand: ");
     for(i = 0; i < 6; i++){
-        console.log(playerHand[i].value)
+        console.log(playerHand[i])
     }
     
     document.getElementById('0').innerText = playerHand[0].value;
@@ -148,8 +151,8 @@ dealCards ();
 
 //Assigns a spot in the player's hand the value of the first card in the deck, and then removes that card from the "top" of the deck. This function will be called inside the "playerTurn" function. Drawn card is temporarily stored in the "cardDraw" variable. Since the card cannot return to the deck per the rules, the shift function is called on the player deck here, to remove it.
 function drawCard(){
-    cardDraw = playerDeck[0];
-    playerDeck.shift();
+    cardDraw = playerDeck.shift();
+    
     document.getElementById('6').innerText = (cardDraw.value);
     console.log("Drawn card: "+Object.values(cardDraw))
 }
@@ -197,24 +200,27 @@ function playerTurn(){ //remember to call at the end
 //Might be nice to add a hand sorting function that automatically keeps your cards in order.
 }
 
-drawCard();
+//drawCard();
 
 function chooseCard(selectedCard){
     for (i = 0; i < 7; i++){
         playerCardsOnScreen[i].addEventListener('click', e => {
+            //console.log(playerHand[e.target.id])
             selectedCard.value = e.target.innerText;
             let cardChoice = selectedCard.value;
             if(cardChoice === '25' || cardChoice === '50' || cardChoice === '75' || cardChoice === '100' || cardChoice === '200'){
                 selectedCard.value = parseInt(selectedCard.value);
                 selectedCard.type = cardTypes[0];
-                console.log(selectedCard.type)
+                selectedCard.isInPlayerHand = playerHand[e.target.id] ? true : false;
+                console.log(selectedCard.type);
             } else if(cardChoice === 'Spare tire' || cardChoice === 'Gas' || cardChoice === 'Repairs' || cardChoice === 'Green light'){
                 selectedCard.type = cardTypes[2];
+                selectedCard.isInPlayerHand = playerHand[e.target.id] ? true : false;
                 console.log(selectedCard.type)
             }
-            console.log(`Selected card: ${Object.values(selectedCard)[0]}`+` ${Object.values(selectedCard)[1]}`)
+            console.log(`Selected card: ${Object.values(selectedCard)[0]} ${Object.values(selectedCard)[1]} ${Object.values(selectedCard)[2]}`)
             document.querySelector(".selected-card").innerText = (`Card selected: ${Object.values(selectedCard)[0]}`)
-            console.log("Card chosen: "+selectedCard.value)
+            console.log("Card chosen: "+selectedCard.isInPlayerHand)
             // return selectedCard;
             // add calls to playCard and discardCard here??
             // playCard();
@@ -255,7 +261,7 @@ function playCard (){
 
     //When function completes (player turn ends), the computer will play its turn
     console.log("Play button clicked")
-    chooseCard();
+    //chooseCard();
     if (selectedCard.type === cardTypes[0]){
         console.log(selectedCard)
 
@@ -338,16 +344,26 @@ const discardCard = () =>{
     //when function completes, computer will play its turn
         //use .find to store a card in a local variable
         //chooseCard();
-        console.log("Discard button clicked")
-        console.log(`${selectedCard.value}, ${selectedCard.type}`)
-        discardPile.push(selectedCard);
-        console.log(discardPile[0]);
-        selectedCard.value = "";
-        selectedCard.type = "";
-        //chooseCard();
-        drawCard();
-        console.log(`New draw card: ${cardDraw.value}, ${cardDraw.type}`)
-        turnsRemaining--;
+    if(selectedCard.isInPlayerHand){
+        console.log(`Is in player hand: ${JSON.stringify(selectedCard)}`)
+    } else {
+        console.log(`Is NOT in player hand: ${JSON.stringify(selectedCard)}`)
+    }
+
+
+        // console.log("Discard button clicked")
+        // console.log(`${selectedCard.value}, ${selectedCard.type}`)
+        // discardPile.push(selectedCard);
+        // console.log(discardPile[0]);
+        // selectedCard.value = "";
+        // selectedCard.type = "";
+        // //chooseCard();
+        // drawCard();
+        // console.log(`New draw card: ${cardDraw.value}, ${cardDraw.type}`)
+        // turnsRemaining--;
+        // document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
+
+
     }
    // discardCard();
 
