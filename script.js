@@ -53,7 +53,6 @@ let turnsRemaining = 20;
 //Variables that interact with DOM elements
 let discardButton = document.querySelector(".discardButton")
 let playButton = document.querySelector(".playButton")
-console.log(discardButton);
 let playerCardsOnScreen = document.querySelectorAll(".player-card");//playerCards needs to be an array of objects? These can't be objects because it's just used to reference DOM elements
 //Had to set empty values for the object in the battlePile array to test the computerTurn function
 // let playerCards = [
@@ -206,6 +205,8 @@ function chooseCard(selectedCard){
     for (i = 0; i < 7; i++){
         playerCardsOnScreen[i].addEventListener('click', e => {
             //console.log(playerHand[e.target.id])
+            let cardPosition = document.getElementById(e.target.id).id;
+            console.log(cardPosition)
             selectedCard.value = e.target.innerText;
             let cardChoice = selectedCard.value;
             if(cardChoice === '25' || cardChoice === '50' || cardChoice === '75' || cardChoice === '100' || cardChoice === '200'){
@@ -220,7 +221,7 @@ function chooseCard(selectedCard){
             }
             console.log(`Selected card: ${Object.values(selectedCard)[0]} ${Object.values(selectedCard)[1]} ${Object.values(selectedCard)[2]}`)
             document.querySelector(".selected-card").innerText = (`Card selected: ${Object.values(selectedCard)[0]}`)
-            console.log("Card chosen: "+selectedCard.isInPlayerHand)
+            //console.log("Card chosen: "+selectedCard.isInPlayerHand)
             // return selectedCard;
             // add calls to playCard and discardCard here??
             // playCard();
@@ -262,6 +263,7 @@ function playCard (){
     //When function completes (player turn ends), the computer will play its turn
     console.log("Play button clicked")
     //chooseCard();
+   
     if (selectedCard.type === cardTypes[0]){
         console.log(selectedCard)
 
@@ -320,6 +322,7 @@ function playCard (){
     document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
     computerTurn();
 
+    gameEnd()
 
 
     
@@ -339,15 +342,41 @@ const discardCard = () =>{
 
     //IF selected card is the Drawn card, push to discard and draw new card
 
-    //IF selected card is in the player's hand, remove matching card, put Drawn card into player's hand, draw new card
+    //IF selected card is in the player's hand, remove card, put Drawn card into player's hand, draw new card
 
     //when function completes, computer will play its turn
         //use .find to store a card in a local variable
         //chooseCard();
+
     if(selectedCard.isInPlayerHand){
+
+        //Need to remove the first card in your hand that matches "selectedCard" values, and push the drawn card into the player hand array.
         console.log(`Is in player hand: ${JSON.stringify(selectedCard)}`)
+        for(i = 0; i < 7; i++){
+            if (playerHand[i].value === selectedCard.value){
+                playerHand.splice(i, 1, cardDraw);
+                break;
+            }
+        }
+        // selectedCard.value = cardDraw.value;
+        // selectedCard.type = cardDraw.type;
+        // selectedCard.isInPlayerHand = cardDraw.isInPlayerHand;
+        // cardDraw.value = "";
+        // cardDraw.type = "";
+        turnsRemaining--;
+        document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
+        drawCard();
+        console.log("New card: "+(JSON.stringify(selectedCard)));
+        
+        document.querySelector
+        
     } else {
-        console.log(`Is NOT in player hand: ${JSON.stringify(selectedCard)}`)
+        console.log(`Is NOT in player hand: ${JSON.stringify(selectedCard)}`);
+        discardPile.push(selectedCard);
+        console.log(discardPile[0])
+        turnsRemaining--;
+        document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
+        drawCard();
     }
 
 
@@ -362,7 +391,7 @@ const discardCard = () =>{
         // console.log(`New draw card: ${cardDraw.value}, ${cardDraw.type}`)
         // turnsRemaining--;
         // document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
-
+    gameEnd();
 
     }
    // discardCard();
@@ -381,3 +410,19 @@ playButton.addEventListener("click", playCard)
 //}
 playerTurn();
 //addEventListener();
+function gameEnd(){
+    if (turnsRemaining === 0 && playerScore === 1000){
+    document.querySelector(".message-area").innerText = (`Well done! You completed your trip.`);
+    discardButton.removeEventListener("click", discardCard);
+    discardButton.removeEventListener("click", playCard)
+    } else if (turnsRemaining === 0 && playerScore < 1000){
+        document.querySelector(".message-area").innerText = (`Nice driving, but you needed a little more time to get there.`);
+        discardButton.removeEventListener("click", discardCard);
+        discardButton.removeEventListener("click", playCard)
+    } else if (turnsRemaining === 0 && playerScore > 1000) {
+        document.querySelector(".message-area").innerText = (`Nice driving, but looks like you missed your destination.`)
+        discardButton.removeEventListener("click", discardCard);
+        discardButton.removeEventListener("click", playCard)
+    }
+    
+}
