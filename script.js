@@ -70,6 +70,8 @@ let selectedCard = {
     value: "",
     type: ""
 }
+
+let cardPosition = 0;
 //This function will build both the player deck containing miles and remedies, and the computer deck containing the hazards.
 
 document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
@@ -205,7 +207,7 @@ function chooseCard(selectedCard){
     for (i = 0; i < 7; i++){
         playerCardsOnScreen[i].addEventListener('click', e => {
             //console.log(playerHand[e.target.id])
-            let cardPosition = document.getElementById(e.target.id).id;
+            cardPosition = document.getElementById(e.target.id).id;
             console.log(cardPosition)
             selectedCard.value = e.target.innerText;
             let cardChoice = selectedCard.value;
