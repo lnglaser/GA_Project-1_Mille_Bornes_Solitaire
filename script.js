@@ -49,7 +49,8 @@ let discardPile = [];
 let cardDraw = null;
 let turnsRemaining = 20;
 //Variables that interact with DOM elements
-let discardButton = document.querySelectorAll(".discardButton")
+let discardButton = document.querySelector(".discardButton")
+let playButton = document.querySelector(".playButton")
 console.log(discardButton);
 let playerCardsOnScreen = document.querySelectorAll(".player-card");//playerCards needs to be an array of objects? These can't be objects because it's just used to reference DOM elements
 //Had to set empty values for the object in the battlePile array to test the computerTurn function
@@ -58,16 +59,21 @@ let playerCards = [
     type: ""
 }
 ]
-let battlePile = [
-    {value: "Green light",
-    type:""}
-];
+//If battle pile is changed from array to single object, you must make changes in the computerTurn function
+let battlePile =
+    {value: "",
+    type: ""};
+
 let playerScore = 0;
 let selectedCard = {
     value: "",
     type: ""
 }
 //This function will build both the player deck containing miles and remedies, and the computer deck containing the hazards.
+
+document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
+document.querySelector(".battle-pile").innerText = ("Battle pile: "+battlePile.value);
+
 function buildDeck ()  {
     for (i = 0; i < cardTypes.length; i++){
         if(i == 0) {
@@ -134,8 +140,8 @@ function dealCards(){
     document.getElementById('4').innerText = playerHand[4].value;
     document.getElementById('5').innerText = playerHand[5].value;
 
-    console.log("Player's deck: "+JSON.stringify(playerDeck));
-    console.log("Computer's deck: "+JSON.stringify(computerDeck));
+    // console.log("Player's deck: "+JSON.stringify(playerDeck));
+    // console.log("Computer's deck: "+JSON.stringify(computerDeck));
 }
 
 dealCards ();
@@ -165,14 +171,14 @@ function computerTurn(){
     if(i === 0){
         console.log("Clear road ahead")
         document.querySelector(".message-area").innerText = "Clear road ahead"
-    } else if (i === 1 && battlePile[0].value === "Green light"){
+    } else if (i === 1 && battlePile.value === "Green light"){
         document.querySelector(".battle-pile").innerText = ("Battle pile: "+Object.values(computerDeck[0])[0])
-        battlePile.unshift(computerDeck[0]);
+        battlePile = (computerDeck[0]);
         console.log("Top of enemy deck: "+Object.values(computerDeck[0])[0])//remove later, used to test Object.values
         computerDeck.shift();
-        document.querySelector(".message-area").innerText = ("Hazard played: "+Object.values(battlePile[0])[0])
-        document.querySelector(".battle-pile").innerText = (Object.values(battlePile[0])[0])
-        console.log("Hazard played: "+Object.values(battlePile[0])[0])
+        document.querySelector(".message-area").innerText = (`Hazard played: ${battlePile.value}`)
+        document.querySelector(".battle-pile").innerText = (`Battle pile: ${battlePile.value}`)
+        console.log(`Hazard played: ${battlePile.value}`)
     }
 }
 computerTurn();
@@ -207,10 +213,12 @@ function chooseCard(selectedCard){
                 console.log(selectedCard.type)
             }
             console.log(`Selected card: ${Object.values(selectedCard)[0]}`+` ${Object.values(selectedCard)[1]}`)
-            document.querySelector(".selected-card").innerText = ("Card selected: "+JSON.stringify(selectedCard.value))
+            document.querySelector(".selected-card").innerText = (`Card selected: ${Object.values(selectedCard)[0]}`)
             console.log("Card chosen: "+selectedCard.value)
-            return selectedCard;
-
+            // return selectedCard;
+            // add calls to playCard and discardCard here??
+            // playCard();
+            // discardCard();
         })
     }
 } 
@@ -222,34 +230,131 @@ chooseCard(selectedCard);
 //might have to build separate functions for playing and discarding?
 //"If you chose to play a remedy card, check if it's the correct one and play it to the battle pile. (If it's not, throw an error message.)"
 //"If you chose to play a mileage card, check if the battle pile has a Green light card on top. (If not, throw an error message."
+function playCard (){
+
+    //Add event listener to "play" button - done
+
+    //If selected card is a mileage card:
+        //check if battle pile shows a "Green light" card
+            // - if yes, add value of mileage card to score, end turn
+            // - if not, show error, do not play card, run function again(?)
+
+    //If selected card is a remedy card:
+        //If remedy card is a "Green light" card,
+            //check if battle pile is a different remedy card OR a "red light" hazard card 
+                //If yes - play card on top of battle pile, end turn
+                //If not - show error, do not play card, run function again
+        //If remedy card is NOT a "Green light" card,
+            //check if battle pile shows associated hazard card
+                // - if yes, put remedy card on top of battle pile, end turn
+                // - if not, show error, do not play card, run function again
+
+    //If the played card was the newly drawn card, move it to a pile and draw a new card.
+
+    //If the played card was in the player's hand, remove it from the hand, add the drawn card to the hand.
+
+    //When function completes (player turn ends), the computer will play its turn
+    console.log("Play button clicked")
+    chooseCard();
+    if (selectedCard.type === cardTypes[0]){
+        console.log(selectedCard)
+
+        if (battlePile.value === "Green light"){
+            console.log("Miles played")
+            playerScore = playerScore+(selectedCard.value)
+            console.log("Score: "+playerScore)
+            document.querySelector(".score-counter").innerText = (`Miles: ${playerScore}`)
+            turnsRemaining--;
+        } else {
+            console.log("You must have a green light on the battle pile to play miles.")
+        }
+    } else if (selectedCard.type === cardTypes[2]){
+        console.log(selectedCard)
+        if (selectedCard.value === "Green light"){
+            if ((battlePile.type === cardTypes[2] && battlePile.value != "Green light") || (battlePile.type === "" && battlePile.value === "")||(battlePile.value === "Red light")){
+                console.log("Green light played")
+                battlePile.type = selectedCard.type;
+                battlePile.value = selectedCard.value;
+                turnsRemaining--;
+            } else if (battlePile.type = cardTypes[1]){
+                console.log("You can't play a green light until you fix this hazard.")
+            }
+        } 
+        else if (selectedCard.value != "Green light"){
+            if (selectedCard.value === "Spare tire" && battlePile.value === "Flat tire"){
+                console.log(`${battlePile.value} replaced with ${selectedCard.value}.`);
+                battlePile.type = selectedCard.type;
+                battlePile.value = selectedCard.value;
+                selectedCard.type = "";
+                selectedCard.value = "";
+                turnsRemaining--;
+            } 
+            else if (selectedCard.value === "Gas" && battlePile.value === "Out of gas"){
+                console.log(`Gas tank refilled.`);
+                battlePile.type = selectedCard.type;
+                battlePile.value = selectedCard.value;
+                selectedCard.type = "";
+                selectedCard.value = "";
+                turnsRemaining--;
+            } 
+            else if (selectedCard.value === "Repairs" && battlePile.value === "Accident"){
+                console.log(`${battlePile.value} fixed with ${selectedCard.value}.`);
+                battlePile.type = selectedCard.type;
+                battlePile.value = selectedCard.value;
+                selectedCard.type = "";
+                selectedCard.value = "";
+                turnsRemaining--;
+            } 
+            else if (battlePile.type = cardTypes[1]){
+                console.log("Incorrect remedy - choose another card.")
+            }
+
+        } 
+    } document.querySelector(".battle-pile").innerText = (`Battle pile: ${battlePile.value}`);
+    document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
+    computerTurn();
 
 
 
+    
+}
+
+//playCard()
 
 
-const discardCard = (selectedCard) =>{
+const discardCard = () =>{
     //discardButton.addEventListener('click', chooseCard);
+
     //Take "selectedCard" variable
     //Push to "discardPile" array
     //Remove matching card from either player's hand or drawn card spot
     //reset "selectedCard" to empty object
     //draw new card
+
     //IF selected card is the Drawn card, push to discard and draw new card
 
     //IF selected card is in the player's hand, remove matching card, put Drawn card into player's hand, draw new card
-    for(i = 0; i < 6; i++){
-        if((Object.values(selectedCard)[0]) === (Object.values(playerHand[i])[0])){
-            discardPile.push(playerHand[i]);
-            playerHand.splice(i,1);
-            playerHand[i].value = cardDraw.value;
-            playerHand[i].type = cardDraw.type;
-        }
+
+    //when function completes, computer will play its turn
+        //use .find to store a card in a local variable
+        //chooseCard();
+        console.log("Discard button clicked")
+        console.log(`${selectedCard.value}, ${selectedCard.type}`)
+        discardPile.push(selectedCard);
+        console.log(discardPile[0]);
+        selectedCard.value = "";
+        selectedCard.type = "";
+        //chooseCard();
+        drawCard();
+        console.log(`New draw card: ${cardDraw.value}, ${cardDraw.type}`)
+        turnsRemaining--;
     }
-    console.log("Discard button clicked")
-    }
-    discardCard();
-//discardCard();
+   // discardCard();
+
+console.log(discardButton)
 discardButton.addEventListener("click", discardCard);
+playButton.addEventListener("click", playCard)
+
 //Event listener section - add event listeners for various buttons (play, discard for each card)
 // newFunction();
 
@@ -259,4 +364,4 @@ discardButton.addEventListener("click", discardCard);
 //     }
 //}
 playerTurn();
-addEventListener();
+//addEventListener();
