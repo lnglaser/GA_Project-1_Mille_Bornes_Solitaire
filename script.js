@@ -50,6 +50,7 @@ let cardDraw = null;
 let turnsRemaining = 20;
 //Variables that interact with DOM elements
 let discardButton = document.querySelectorAll(".discardButton")
+console.log(discardButton);
 let playerCardsOnScreen = document.querySelectorAll(".player-card");//playerCards needs to be an array of objects? These can't be objects because it's just used to reference DOM elements
 //Had to set empty values for the object in the battlePile array to test the computerTurn function
 let playerCards = [
@@ -144,19 +145,15 @@ function drawCard(){
     cardDraw = playerDeck[0];
     playerDeck.shift();
     document.getElementById('6').innerText = (cardDraw.value);
-    console.log("Drawn card: "+JSON.stringify(cardDraw))
+    console.log("Drawn card: "+Object.values(cardDraw))
 }
 
 //removes selected card from play and adds it to the discard pile.
 
 
-function discardCard(){
-    console.log("Discard button clicked")
-}
-
-for(i = 0; i < 7; i++){;
-    discardButton[i].addEventListener('click', discardCard);
-}
+// for(i = 0; i < 7; i++){;
+//     discardButton[i].addEventListener('click', discardCard);
+// }
 //Plays card to the table - either adds to score (mileage) or plays a remedy on top of a hazard.
 // function playCard(e){
 //     e.target.
@@ -169,19 +166,20 @@ function computerTurn(){
         console.log("Clear road ahead")
         document.querySelector(".message-area").innerText = "Clear road ahead"
     } else if (i === 1 && battlePile[0].value === "Green light"){
-        document.querySelector(".battle-pile").innerText = ("Battle pile: "+JSON.stringify(computerDeck[0].value))
+        document.querySelector(".battle-pile").innerText = ("Battle pile: "+Object.values(computerDeck[0])[0])
         battlePile.unshift(computerDeck[0]);
+        console.log("Top of enemy deck: "+Object.values(computerDeck[0])[0])//remove later, used to test Object.values
         computerDeck.shift();
-        document.querySelector(".message-area").innerText = ("Hazard played: "+JSON.stringify(battlePile[0].value))
-        document.querySelector(".battle-pile").innerText = (JSON.stringify(battlePile[0].value))
-        console.log("Hazard played: "+JSON.stringify(battlePile[0].value))
+        document.querySelector(".message-area").innerText = ("Hazard played: "+Object.values(battlePile[0])[0])
+        document.querySelector(".battle-pile").innerText = (Object.values(battlePile[0])[0])
+        console.log("Hazard played: "+Object.values(battlePile[0])[0])
     }
 }
 computerTurn();
 //Player should be able to draw a card, and either play a card to the table or discard.
 function playerTurn(){ //remember to call at the end
     drawCard();
-    discardCard();
+    //discardCard();
 
 //Player:
 // 1) Draws a card, and MUST either
@@ -193,34 +191,65 @@ function playerTurn(){ //remember to call at the end
 //Might be nice to add a hand sorting function that automatically keeps your cards in order.
 }
 
-function chooseCard(){
+drawCard();
+
+function chooseCard(selectedCard){
     for (i = 0; i < 7; i++){
         playerCardsOnScreen[i].addEventListener('click', e => {
             selectedCard.value = e.target.innerText;
             let cardChoice = selectedCard.value;
             if(cardChoice === '25' || cardChoice === '50' || cardChoice === '75' || cardChoice === '100' || cardChoice === '200'){
                 selectedCard.value = parseInt(selectedCard.value);
-                selectedCard.type = "Mileage";
+                selectedCard.type = cardTypes[0];
                 console.log(selectedCard.type)
             } else if(cardChoice === 'Spare tire' || cardChoice === 'Gas' || cardChoice === 'Repairs' || cardChoice === 'Green light'){
-                selectedCard.type = "Remedy";
+                selectedCard.type = cardTypes[2];
                 console.log(selectedCard.type)
             }
-            console.log("Selected card: "+JSON.stringify(selectedCard))
+            console.log(`Selected card: ${Object.values(selectedCard)[0]}`+` ${Object.values(selectedCard)[1]}`)
+            document.querySelector(".selected-card").innerText = ("Card selected: "+JSON.stringify(selectedCard.value))
+            console.log("Card chosen: "+selectedCard.value)
+            return selectedCard;
+
         })
     }
+} 
+
+chooseCard(selectedCard);
+//return selectedCard;
 
     
 //might have to build separate functions for playing and discarding?
 //"If you chose to play a remedy card, check if it's the correct one and play it to the battle pile. (If it's not, throw an error message.)"
 //"If you chose to play a mileage card, check if the battle pile has a Green light card on top. (If not, throw an error message."
 
-} chooseCard();
-function discardCard(){
-    
-}
-//drawCard();
 
+
+
+
+const discardCard = (selectedCard) =>{
+    //discardButton.addEventListener('click', chooseCard);
+    //Take "selectedCard" variable
+    //Push to "discardPile" array
+    //Remove matching card from either player's hand or drawn card spot
+    //reset "selectedCard" to empty object
+    //draw new card
+    //IF selected card is the Drawn card, push to discard and draw new card
+
+    //IF selected card is in the player's hand, remove matching card, put Drawn card into player's hand, draw new card
+    for(i = 0; i < 6; i++){
+        if((Object.values(selectedCard)[0]) === (Object.values(playerHand[i])[0])){
+            discardPile.push(playerHand[i]);
+            playerHand.splice(i,1);
+            playerHand[i].value = cardDraw.value;
+            playerHand[i].type = cardDraw.type;
+        }
+    }
+    console.log("Discard button clicked")
+    }
+    discardCard();
+//discardCard();
+discardButton.addEventListener("click", discardCard);
 //Event listener section - add event listeners for various buttons (play, discard for each card)
 // newFunction();
 
@@ -230,3 +259,4 @@ function discardCard(){
 //     }
 //}
 playerTurn();
+addEventListener();
