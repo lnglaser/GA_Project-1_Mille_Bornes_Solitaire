@@ -9,13 +9,13 @@ div .play-area{
     
 }
 
-div .player-hand {
+.player-hand {
     flex-direction: row;
     align-items: flex-end;
     border: 2px solid black;
 }
 
-div .drawn-card {
+.drawn-card {
     width: 5em;
     height: 7em;
     display: flex;
@@ -27,7 +27,7 @@ div .drawn-card {
     cursor: pointer;
 }
 
-div .player-card {
+.player-card {
     width: 5em;
     height: 7em;
     display: flex;
@@ -39,7 +39,7 @@ div .player-card {
     cursor: pointer;
 }
 
-
+.all-card
 .score-counter {
     border: 2px solid black;
 }
