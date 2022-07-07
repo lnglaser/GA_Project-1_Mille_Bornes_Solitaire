@@ -46,7 +46,7 @@ let computerDeck = [];
 let playerDeck = [];
 let playerHand = [];
 let discardPile = [];
-let cardDraw = null;
+let cardDraw = [];
 
 let turnsRemaining = 20;
 
@@ -61,18 +61,19 @@ let playerCardsOnScreen = document.querySelectorAll(".player-card");//playerCard
 // }
 // ]
 //If battle pile is changed from array to single object, you must make changes in the computerTurn function
-let battlePile =
-    {value: "",
-    type: ""};
+let battlePile = {
+    value: "",
+    type: ""
+};
 
 let playerScore = 0;
 
-let cardPosition = 0;
+//let cardPosition = 0;
 
 let selectedCard = {
     value: "",
     type: "",
-    position: cardPosition
+    //position: cardPosition
 }
 
 
@@ -138,7 +139,7 @@ function dealCards(){
     }
     console.log("Player's hand: ");
     for(i = 0; i < 6; i++){
-        playerHand[i].cardPosition = i;
+        playerHand[i].position = i;
         console.log(playerHand[i]);
     }
     
@@ -158,7 +159,7 @@ dealCards ();
 //Assigns a spot in the player's hand the value of the first card in the deck, and then removes that card from the "top" of the deck. This function will be called inside the "playerTurn" function. Drawn card is temporarily stored in the "cardDraw" variable. Since the card cannot return to the deck per the rules, the shift function is called on the player deck here, to remove it.
 function drawCard(){
     cardDraw = playerDeck.shift();
-    
+    cardDraw.position = 6;
     document.getElementById('6').innerText = (cardDraw.value);
     console.log("Drawn card: "+Object.values(cardDraw))
 }
@@ -212,7 +213,8 @@ function chooseCard(selectedCard){
     for (i = 0; i < 7; i++){
         playerCardsOnScreen[i].addEventListener('click', e => {
             //console.log(playerHand[e.target.id])
-            cardPosition = document.getElementById(e.target.id).id;
+            let cardPosition = document.getElementById(e.target.id).id;
+            selectedCard.position = cardPosition;
             console.log(cardPosition)
             selectedCard.value = e.target.innerText;
             let cardChoice = selectedCard.value;
@@ -226,7 +228,7 @@ function chooseCard(selectedCard){
                 selectedCard.isInPlayerHand = playerHand[e.target.id] ? true : false;
                 console.log(selectedCard.type)
             }
-            console.log(`Selected card: ${Object.values(selectedCard)[0]} ${Object.values(selectedCard)[1]} ${Object.values(selectedCard)[2]}`)
+            console.log(`Selected card: ${Object.values(selectedCard)[0]} ${Object.values(selectedCard)[1]} ${Object.values(selectedCard)[2]} ${Object.values(selectedCard)[3]}`)
             document.querySelector(".selected-card").innerText = (`Card selected: ${Object.values(selectedCard)[0]}`)
             //console.log("Card chosen: "+selectedCard.isInPlayerHand)
             // return selectedCard;
@@ -358,32 +360,27 @@ const discardCard = () =>{
     if(selectedCard.isInPlayerHand){
 
         //Need to remove the first card in your hand that matches "selectedCard" values, and push the drawn card into the player hand array.
+        let positionHolder = selectedCard.position;
+        console.log(positionHolder)
         console.log(`Is in player hand: ${JSON.stringify(selectedCard)}`)
-        for(i = 0; i < 6; i++){
-            if (playerHand[i].cardPosition === selectedCard.value){
-                playerHand.splice(i, 1, cardDraw);
-                break;
-            }
-        }
-        // selectedCard.value = cardDraw.value;
-        // selectedCard.type = cardDraw.type;
-        // selectedCard.isInPlayerHand = cardDraw.isInPlayerHand;
-        // cardDraw.value = "";
-        // cardDraw.type = "";
+        console.log(cardDraw)
         turnsRemaining--;
         document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
         drawCard();
-        console.log("New card: "+(JSON.stringify(selectedCard)));
-        
+        if (selectedCard.position < 6){
+        console.log("Discarded card: "+(JSON.stringify(selectedCard)));
+        }
         document.querySelector
         
         } else {
             console.log(`Is NOT in player hand: ${JSON.stringify(selectedCard)}`);
+            console.log(cardDraw)
             discardPile.push(selectedCard);
             console.log(discardPile[0])
             turnsRemaining--;
             document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
             drawCard();
+            console.log("Discarded card: "+(JSON.stringify(selectedCard)));
     }
 
 
@@ -407,14 +404,7 @@ console.log(discardButton)
 discardButton.addEventListener("click", discardCard);
 playButton.addEventListener("click", playCard)
 
-//Event listener section - add event listeners for various buttons (play, discard for each card)
-// newFunction();
 
-// function newFunction() {
-//     playButtons.forEach(playerTurn); {
-//         playButtons[i].addEventListener("click", playerTurn);
-//     }
-//}
 playerTurn();
 //addEventListener();
 function gameEnd(){
