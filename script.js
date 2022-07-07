@@ -195,6 +195,8 @@ computerTurn();
 //Player should be able to draw a card, and either play a card to the table or discard.
 function playerTurn(){ //remember to call at the end
     drawCard();
+    discardCard();
+    playCard();
     //discardCard();
 
 //Player:
@@ -281,7 +283,7 @@ function playCard (){
             playerScore = playerScore+(selectedCard.value)
             console.log("Score: "+playerScore)
             document.querySelector(".score-counter").innerText = (`Miles: ${playerScore}`)
-            turnsRemaining--;
+            // turnsRemaining--;
         } else {
             console.log("You must have a green light on the battle pile to play miles.")
         }
@@ -292,7 +294,7 @@ function playCard (){
                 console.log("Green light played")
                 battlePile.type = selectedCard.type;
                 battlePile.value = selectedCard.value;
-                turnsRemaining--;
+                // turnsRemaining--;
             } else if (battlePile.type = cardTypes[1]){
                 console.log("You can't play a green light until you fix this hazard.")
             }
@@ -304,7 +306,7 @@ function playCard (){
                 battlePile.value = selectedCard.value;
                 selectedCard.type = "";
                 selectedCard.value = "";
-                turnsRemaining--;
+                // turnsRemaining--;
             } 
             else if (selectedCard.value === "Gas" && battlePile.value === "Out of gas"){
                 console.log(`Gas tank refilled.`);
@@ -312,7 +314,7 @@ function playCard (){
                 battlePile.value = selectedCard.value;
                 selectedCard.type = "";
                 selectedCard.value = "";
-                turnsRemaining--;
+                // turnsRemaining--;
             } 
             else if (selectedCard.value === "Repairs" && battlePile.value === "Accident"){
                 console.log(`${battlePile.value} fixed with ${selectedCard.value}.`);
@@ -320,13 +322,14 @@ function playCard (){
                 battlePile.value = selectedCard.value;
                 selectedCard.type = "";
                 selectedCard.value = "";
-                turnsRemaining--;
+                // turnsRemaining--;
             } 
             else if (battlePile.type = cardTypes[1]){
                 console.log("Incorrect remedy - choose another card.")
             }
 
-        } 
+        } discardCard();
+        console.log(playerHand);
     } document.querySelector(".battle-pile").innerText = (`Battle pile: ${battlePile.value}`);
     document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
     computerTurn();
@@ -360,22 +363,29 @@ const discardCard = () =>{
     if(selectedCard.isInPlayerHand){
 
         //Need to remove the first card in your hand that matches "selectedCard" values, and push the drawn card into the player hand array.
+        console.log(selectedCard.position)
         let positionHolder = selectedCard.position;
         //console.log("Position of chosen card: "+positionHolder)
         console.log(`Is in player hand: ${JSON.stringify(selectedCard)}`)
         console.log(cardDraw)
+        for(i=0; i<6; i++ ){
+        if (parseInt(playerHand[i].position) == selectedCard.position){
+            console.log("Card to be discarded: "+playerHand[i].value);
+
+            playerHand.splice(i, 1, cardDraw);
+            break;
+            }
+        }
         turnsRemaining--;
         document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
-        drawCard();
+        //drawCard();
         if (selectedCard.position < 6){
             console.log("Discarded card: "+(JSON.stringify(selectedCard)));
-            selectedCard.value = cardDraw.value;
-            selectedCard.type = cardDraw.type
-            selectedCard.isInPlayerHand = true;
-            selectedCard.position = positionHolder
-            console.log("Card now in hand: "+JSON.stringify(selectedCard))
+            
+            
+            drawCard();
         }
-        document.querySelector
+        //document.querySelector
         
         } else {
             console.log(`Is NOT in player hand: ${JSON.stringify(selectedCard)}`);
@@ -400,7 +410,8 @@ const discardCard = () =>{
         // console.log(`New draw card: ${cardDraw.value}, ${cardDraw.type}`)
         // turnsRemaining--;
         // document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
-    gameEnd();
+        console.log(playerHand);
+        gameEnd();
 
     }
    // discardCard();

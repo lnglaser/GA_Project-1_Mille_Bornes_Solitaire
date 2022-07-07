@@ -5,13 +5,13 @@ body{
 
 div .play-area{
     
-    justify-content:center
+   flex-direction: row;
     
 }
 
 div .player-hand {
-    /* flex-direction: row;
-    align-items: flex-end; */
+    flex-direction: row;
+    align-items: flex-end;
     border: 2px solid black;
 }
 
