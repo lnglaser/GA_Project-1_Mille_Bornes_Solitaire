@@ -361,14 +361,19 @@ const discardCard = () =>{
 
         //Need to remove the first card in your hand that matches "selectedCard" values, and push the drawn card into the player hand array.
         let positionHolder = selectedCard.position;
-        console.log(positionHolder)
+        //console.log("Position of chosen card: "+positionHolder)
         console.log(`Is in player hand: ${JSON.stringify(selectedCard)}`)
         console.log(cardDraw)
         turnsRemaining--;
         document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
         drawCard();
         if (selectedCard.position < 6){
-        console.log("Discarded card: "+(JSON.stringify(selectedCard)));
+            console.log("Discarded card: "+(JSON.stringify(selectedCard)));
+            selectedCard.value = cardDraw.value;
+            selectedCard.type = cardDraw.type
+            selectedCard.isInPlayerHand = true;
+            selectedCard.position = positionHolder
+            console.log("Card now in hand: "+JSON.stringify(selectedCard))
         }
         document.querySelector
         
