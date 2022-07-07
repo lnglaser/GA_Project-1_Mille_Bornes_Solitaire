@@ -53,7 +53,7 @@ let turnsRemaining = 20;
 //Variables that interact with DOM elements
 let discardButton = document.querySelector(".discardButton")
 let playButton = document.querySelector(".playButton")
-let playerCardsOnScreen = document.querySelectorAll(".player-card");//playerCards needs to be an array of objects? These can't be objects because it's just used to reference DOM elements
+let playerCardsOnScreen = document.querySelectorAll(".all-card");//playerCards needs to be an array of objects? These can't be objects because it's just used to reference DOM elements
 //Had to set empty values for the object in the battlePile array to test the computerTurn function
 // let playerCards = [
 //     {value: "",
@@ -195,8 +195,8 @@ computerTurn();
 //Player should be able to draw a card, and either play a card to the table or discard.
 function playerTurn(){ //remember to call at the end
     drawCard();
-    discardCard();
-    playCard();
+    // discardCard();
+    // playCard();
     //discardCard();
 
 //Player:
@@ -207,7 +207,8 @@ function playerTurn(){ //remember to call at the end
 //    b) discard a card
 // should be able to play card by mousing over and clicking, possibly add buttons for discarding instead.
 //Might be nice to add a hand sorting function that automatically keeps your cards in order.
-}
+} turnsRemaining--;
+console.log(turnsRemaining);
 
 //drawCard();
 
@@ -368,15 +369,19 @@ const discardCard = () =>{
         //console.log("Position of chosen card: "+positionHolder)
         console.log(`Is in player hand: ${JSON.stringify(selectedCard)}`)
         console.log(cardDraw)
+        let cardArray = document.querySelectorAll(".player-card")
         for(i=0; i<6; i++ ){
-        if (parseInt(playerHand[i].position) == selectedCard.position){
-            console.log("Card to be discarded: "+playerHand[i].value);
-
-            playerHand.splice(i, 1, cardDraw);
+            if (parseInt(playerHand[i].position) == selectedCard.position){
+                console.log("Card to be discarded: "+playerHand[i].value);
+                
+                playerHand.splice(i, 1, cardDraw);
+                
+                cardArray[i].innerText = cardDraw.value
             break;
             }
         }
-        turnsRemaining--;
+        // turnsRemaining--;
+        // console.log(turnsRemaining);
         document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
         //drawCard();
         if (selectedCard.position < 6){
@@ -392,11 +397,14 @@ const discardCard = () =>{
             console.log(cardDraw)
             discardPile.push(selectedCard);
             console.log(discardPile[0])
-            turnsRemaining--;
+            // turnsRemaining--;
+            // console.log(turnsRemaining);
             document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
             drawCard();
             console.log("Discarded card: "+(JSON.stringify(selectedCard)));
-    }
+    } 
+    turnsRemaining--;
+    console.log(turnsRemaining);
 
 
         // console.log("Discard button clicked")
