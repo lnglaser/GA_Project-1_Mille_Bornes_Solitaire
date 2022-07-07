@@ -185,7 +185,11 @@ function computerTurn(){
         computerDeck.shift();
         document.querySelector(".message-area").innerText = (`Hazard played: ${battlePile.value}`)
         document.querySelector(".battle-pile").innerText = (`Battle pile: ${battlePile.value}`)
-        console.log(`Hazard played: ${battlePile.value}`)
+        const tripLog = document.querySelector(".game-log");
+        const newLogItem = document.createElement("li");
+        newLogItem.appendChild(document.createTextNode(`Hazard played: ${battlePile.value}`))
+        tripLog.appendChild(newLogItem);
+        // console.log(`Hazard played: ${battlePile.value}`)
     }
 }
 computerTurn();
@@ -226,7 +230,6 @@ function chooseCard(selectedCard){
             } else if(cardChoice === 'Spare tire' || cardChoice === 'Gas' || cardChoice === 'Repairs' || cardChoice === 'Green light'){
                 selectedCard.type = cardTypes[2];
                 selectedCard.isInPlayerHand = playerHand[e.target.id] ? true : false;
-               
             }
             
             document.querySelector(".selected-card").innerText = (`Card selected: ${Object.values(selectedCard)[0]}`)
@@ -274,10 +277,13 @@ function playCard (){
    
 
     //Should I wrap this whole thing in a for loop, and replace each discardCard call with the splice from the discardCard function?
+
+
+    //if/else starts here
     if (selectedCard.type === cardTypes[0]){
 
         if (battlePile.value === "Green light"){
-            
+            document.querySelector(".error-message").innerText = "All good."
             console.log("Miles played")
             playerScore = playerScore+(selectedCard.value)
             // console.log("Score: "+playerScore)
@@ -285,24 +291,35 @@ function playCard (){
             // turnsRemaining--;
             discardCard();
         } else {
-            console.log("You must have a green light on the battle pile to play miles.")
+            document.querySelector(".error-message").innerText = "You must have a green light on the battle pile to play miles."
+            // console.log("You must have a green light on the battle pile to play miles.")
         }
     } else if (selectedCard.type === cardTypes[2]){
         // console.log(selectedCard)
         if (selectedCard.value === "Green light"){
             if ((battlePile.type === cardTypes[2] && battlePile.value != "Green light") || (battlePile.type === "" && battlePile.value === "")||(battlePile.value === "Red light")){
-                console.log("Green light played")
+                const tripLog = document.querySelector(".game-log");
+                const newLogItem = document.createElement("li");
+                newLogItem.appendChild(document.createTextNode(`Green light - let's roll!`))
+                tripLog.appendChild(newLogItem);
+                // console.log("Green light played")
                 battlePile.type = selectedCard.type;
                 battlePile.value = selectedCard.value;
+                document.querySelector(".error-message").innerText = "All good."
                 // turnsRemaining--;
                 discardCard();
             } else if (battlePile.type = cardTypes[1]){
-                console.log("You can't play a green light until you fix this hazard.")
+                document.querySelector(".error-message").innerText = "You can't play a green light until you fix the hazard."
+                // console.log("You can't play a green light until you fix the hazard.")
             }
         } 
         else if (selectedCard.value != "Green light"){
             if (selectedCard.value === "Spare tire" && battlePile.value === "Flat tire"){
-                console.log(`${battlePile.value} replaced with ${selectedCard.value}.`);
+                const tripLog = document.querySelector(".game-log");
+                const newLogItem = document.createElement("li");
+                newLogItem.appendChild(document.createTextNode(`${battlePile.value} replaced with ${selectedCard.value}.`))
+                tripLog.appendChild(newLogItem);
+                // console.log(`${battlePile.value} replaced with ${selectedCard.value}.`);
                 battlePile.type = selectedCard.type;
                 battlePile.value = selectedCard.value;
                 discardCard();
@@ -311,7 +328,11 @@ function playCard (){
                 // turnsRemaining--;
             } 
             else if (selectedCard.value === "Gas" && battlePile.value === "Out of gas"){
-                console.log(`Gas tank refilled.`);
+                const tripLog = document.querySelector(".game-log");
+                const newLogItem = document.createElement("li");
+                newLogItem.appendChild(document.createTextNode(`Gas tank refilled.`))
+                tripLog.appendChild(newLogItem);
+                // console.log(`Gas tank refilled.`);
                 battlePile.type = selectedCard.type;
                 battlePile.value = selectedCard.value;
                 discardCard();
@@ -320,7 +341,11 @@ function playCard (){
                 // turnsRemaining--;
             } 
             else if (selectedCard.value === "Repairs" && battlePile.value === "Accident"){
-                console.log(`${battlePile.value} fixed with ${selectedCard.value}.`);
+                const tripLog = document.querySelector(".game-log");
+                const newLogItem = document.createElement("li");
+                newLogItem.appendChild(document.createTextNode(`${battlePile.value} fixed with ${selectedCard.value}.`))
+                tripLog.appendChild(newLogItem);
+                // console.log(`${battlePile.value} fixed with ${selectedCard.value}.`);
                 battlePile.type = selectedCard.type;
                 battlePile.value = selectedCard.value;
                 discardCard();
@@ -329,22 +354,22 @@ function playCard (){
                 // turnsRemaining--;
             } 
             else if (battlePile.type = cardTypes[1]){
-                console.log("Incorrect remedy - choose another card.")
+                document.querySelector(".error-message").innerText = "Incorrect remedy - choose another card."
+                // console.log("Incorrect remedy - choose another card.")
             }
 
         } //discardCard();
          console.log(playerHand);
-    } document.querySelector(".battle-pile").innerText = (`Battle pile: ${battlePile.value}`);
+    } 
+    //if/else ends here
+    document.querySelector(".battle-pile").innerText = (`Battle pile: ${battlePile.value}`);
     document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
     computerTurn();
-
+    selectedCard.position = null;
     gameEnd()
 
-
-    
 }
 
-//playCard()
 
 
 const discardCard = () =>{
@@ -379,34 +404,28 @@ const discardCard = () =>{
                 playerHand.splice(i, 1, cardDraw);
                 
                 cardArray[i].innerText = cardDraw.value
-                
+
+                turnsRemaining--;
+                document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
             // break;
             }
         }
         // turnsRemaining--;
         // console.log(turnsRemaining);
+        
         document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
         //drawCard();
         if (selectedCard.position < 6){
-            // console.log("Discarded card: "+(JSON.stringify(selectedCard)));
-            
-            
             drawCard();
         }
-        //document.querySelector
         
         } else {
-            // console.log(`Is NOT in player hand: ${JSON.stringify(selectedCard)}`);
-            // console.log(cardDraw)
             discardPile.push(selectedCard);
-            // console.log(discardPile[0])
-            // turnsRemaining--;
-            // console.log(turnsRemaining);
+            turnsRemaining--;
             document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
             drawCard();
-            // console.log("Discarded card: "+(JSON.stringify(selectedCard)));
     } 
-    turnsRemaining--;
+  
     console.log(turnsRemaining);
 
 
@@ -435,15 +454,15 @@ playButton.addEventListener("click", playCard)
 playerTurn();
 
 function gameEnd(){
-    if (turnsRemaining === 0 && playerScore === 1000){
+    if (turnsRemaining < 1 && playerScore === 1000){
     document.querySelector(".message-area").innerText = (`Well done! You completed your trip.`);
     discardButton.removeEventListener("click", discardCard);
     discardButton.removeEventListener("click", playCard)
-    } else if (turnsRemaining === 0 && playerScore < 1000){
+    } else if (turnsRemaining < 1 && playerScore < 1000){
         document.querySelector(".message-area").innerText = (`Nice driving, but you needed a little more time to get there.`);
         discardButton.removeEventListener("click", discardCard);
         discardButton.removeEventListener("click", playCard)
-    } else if (turnsRemaining === 0 && playerScore > 1000) {
+    } else if (turnsRemaining < 1 && playerScore > 1000) {
         document.querySelector(".message-area").innerText = (`Nice driving, but looks like you missed your destination.`)
         discardButton.removeEventListener("click", discardCard);
         discardButton.removeEventListener("click", playCard)
