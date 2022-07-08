@@ -369,6 +369,7 @@ function playCard() {
     selectedCard.position = null
     gameEnd()
   }
+  document.querySelector('.selected-card').innerText = 'Card selected: '
 }
 
 const discardCard = () => {
