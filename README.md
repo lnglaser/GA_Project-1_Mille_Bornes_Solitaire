@@ -4,6 +4,8 @@
 
 ### By: Leon Glaser
 
+[Completed project](https://millebornessolitaire.surge.sh/)
+
 [Project Trello Board](https://trello.com/b/YJ96VqDm/ga-project-1-game)
 
 [LinkedIn](https://www.linkedin.com/in/leon-glaser-02645322/) |
