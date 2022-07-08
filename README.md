@@ -12,6 +12,12 @@
 
 ---
 
+### **_Timeline_**
+
+#### **Project started 07/03/2022**
+
+#### **Project successfully completed 07/08/2022**
+
 ### **_Description_**
 
 #### **The aim of this project is to produce a simplified, one-player version of the game Mille Bornes.**
@@ -59,7 +65,7 @@
 
 #### **New game**
 
-## ![Imgur](https://i.imgur.com/MMkcmko.png)
+![Imgur](https://i.imgur.com/xPYR1hx.png)
 
 ### **_Future Updates_**
 
