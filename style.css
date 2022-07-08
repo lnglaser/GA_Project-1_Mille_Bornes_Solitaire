@@ -19,7 +19,7 @@ div{
 
 .player-hand {
     display: flex;
-    border: 2px solid black;
+    border: 2px solid white;
     width: 50vw;
 }
 
@@ -66,12 +66,12 @@ div{
 }
 
 .score-counter {
-    border: 2px solid black;
+    border: 2px solid white;
     width: 20vw;
 }
 
 .turnCount {
-    border: 2px solid black;
+    border: 2px solid white;
     width: 20vw;
 }
 
@@ -81,12 +81,12 @@ div{
 }
 
 .battle-pile {
-    border: 2px solid black;
+    border: 2px solid white;
     width: 20vw;
 }
 
 .selected-card{
-    border: 2px solid black;
+    border: 2px solid white;
     width: 20vw;
 }
 
@@ -142,4 +142,8 @@ li {
 a {
     font-size: 1.2em;
     color: aquamarine;
+}
+
+.buttonContainer {
+    flex-wrap: wrap;
 }
