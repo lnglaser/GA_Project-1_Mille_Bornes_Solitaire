@@ -57,9 +57,7 @@
 
 #### **New game**
 
-![Image](https://imgur.com/MMkcmko)
-
----
+## ![Imgur](https://i.imgur.com/MMkcmko.png)
 
 ### **_Future Updates_**
 
