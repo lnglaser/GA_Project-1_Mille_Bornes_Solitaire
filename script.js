@@ -504,17 +504,6 @@ const discardCard = () => {
 
     console.log(turnsRemaining)
 
-    // console.log("Discard button clicked")
-    // console.log(`${selectedCard.value}, ${selectedCard.type}`)
-    // discardPile.push(selectedCard);
-    // console.log(discardPile[0]);
-    // selectedCard.value = "";
-    // selectedCard.type = "";
-    // //chooseCard();
-    // drawCard();
-    // console.log(`New draw card: ${cardDraw.value}, ${cardDraw.type}`)
-    // turnsRemaining--;
-    // document.querySelector(".turnCount").innerText = (`Number of turns left: ${turnsRemaining}`)
     console.log('Hand after discarding: ', JSON.stringify(playerHand))
     gameEnd()
   }
@@ -526,27 +515,6 @@ playButton.addEventListener('click', playCard)
 playerTurn()
 
 function gameEnd() {
-  //   if (turnsRemaining < 1 && playerScore === 1000) {
-  //     document.querySelector(
-  //       '.message-area'
-  //     ).innerText = `Well done! You completed your trip.`
-  //     discardButton.removeEventListener('click', discardCard)
-  //     discardButton.removeEventListener('click', playCard)
-  //   } else if (turnsRemaining === 0 && playerScore < 1000) {
-  //     document.querySelector(
-  //       '.message-area'
-  //     ).innerText = `Nice driving, but you needed a little more time to get there.`
-  //     discardButton.removeEventListener('click', discardCard)
-  //     discardButton.removeEventListener('click', playCard)
-  //   } else if (turnsRemaining === 0 && playerScore > 1000) {
-  //     document.querySelector(
-  //       '.message-area'
-  //     ).innerText = `Nice driving, but looks like you missed your destination.`
-  //     discardButton.removeEventListener('click', discardCard)
-  //     discardButton.removeEventListener('click', playCard)
-  //   }
-  // }
-
   if (playerScore === 1000) {
     document.querySelector(
       '.message-area'
