@@ -1,44 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
+
 body{
+    font-family: 'Racing Sans One', cursive;
     background-color: aqua;
-    display: flex;
+    /* display:inline-flex;
+    align-items: center; */
 }
 
-div .play-area{
-    
+div .w3-container{
+
     
 }
 
 .player-hand {
-    flex-direction: row;
-    align-items: flex-end;
+    display: flex;
     border: 2px solid black;
+    width: 2fr;
+}
+
+
+.player-card {
+    width: 5em;
+    height: 7em;
+    /* display: flex;
+    flex-direction: row;
+    align-items: flex; */
+    border: 2px solid black;
+    font-size: 20px;
+    margin: 20px;
+    cursor: pointer;
 }
 
 .drawn-card {
     width: 5em;
     height: 7em;
-    display: flex;
+    /* display: flex;
     flex-direction: column;
-    align-items: flex;
+    align-items: flex; */
     border: 2px solid black;
     font-size: 20px;
     margin: 20px;
     cursor: pointer;
 }
 
-.player-card {
-    width: 5em;
-    height: 7em;
-    display: flex;
-    flex-direction: column;
-    align-items: flex;
-    border: 2px solid black;
-    font-size: 20px;
-    margin: 20px;
-    cursor: pointer;
+.all-card {
+
+    background-color: white;
+    text-align: center;
+    border-radius: 10%;
 }
 
-.all-card
+.all-card:hover {
+    background-color: lightpink;
+}
+
+.all-card:active {
+    background-color: lightgreen;
+}
+
 .score-counter {
     border: 2px solid black;
 }
@@ -48,10 +67,33 @@ div .play-area{
     /* flex-direction: row; */
 }
 
-.discard-pile {
+.battle-pile {
     border: 2px solid black;
 }
 
-.draw-pile{
+.selected-card{
     border: 2px solid black;
+}
+
+button{
+    font-family: 'Racing Sans One', cursive;
+    width: 10em;
+    height: 3em;
+    display: inline;
+}
+
+.playButton {
+    
+}
+
+p {
+    font-size: 20px;
+}
+
+li {
+    font-size: 18px;
+}
+
+a {
+    font-size: 1.2em;
 }
