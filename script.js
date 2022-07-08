@@ -84,8 +84,8 @@ let discardButton = document.querySelector('.discardButton')
 let playButton = document.querySelector('.playButton')
 let playerCardsOnScreen = document.querySelectorAll('.all-card')
 let battlePile = {
-  value: '',
-  type: ''
+  value: 'Green light',
+  type: '2'
 }
 
 let playerScore = 0
@@ -196,7 +196,11 @@ function computerTurn() {
   if (i >= 3) {
     console.log('Clear road ahead')
     document.querySelector('.message-area').innerText = 'Clear road ahead'
-  } else if (i < 3 && battlePile.value === 'Green light') {
+  } else if (
+    i < 3 &&
+    battlePile.value === 'Green light' &&
+    turnsRemaining < 20
+  ) {
     document.querySelector('.battle-pile').innerText =
       'Battle pile: ' + Object.values(computerDeck[0])[0]
     battlePile = computerDeck[0]
