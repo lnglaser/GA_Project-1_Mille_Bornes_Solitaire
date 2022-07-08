@@ -55,9 +55,9 @@
 
 **To be updated.**
 
-#### **_Image header 1_**
+#### **New game**
 
-#### **_Image header 2_**
+![Image](https://imgur.com/MMkcmko)
 
 ---
 
