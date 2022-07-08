@@ -166,10 +166,9 @@ function dealCards() {
 
     playerHand[i].isInPlayerHand = true
   }
-  console.log("Player's hand: ")
+
   for (i = 0; i < 6; i++) {
     playerHand[i].position = i
-    console.log(playerHand[i])
   }
 
   document.getElementById('0').innerText = playerHand[0].value
@@ -187,14 +186,12 @@ function drawCard() {
   cardDraw = playerDeck.shift()
 
   document.getElementById('6').innerText = cardDraw.value
-  console.log('Drawn card: ' + Object.values(cardDraw))
 }
 
 //This function will generate a random number, and based on that number, either draw a hazard card from the computer deck and play it on the battle pile, or pass its turn. (Might possibly be able to make this number adjustable to change the difficulty of the game.)
 function computerTurn() {
   let i = Math.round(Math.random() * 10)
   if (i >= 3) {
-    console.log('Clear road ahead')
     document.querySelector('.message-area').innerText = 'Clear road ahead'
   } else if (
     i < 3 &&
@@ -265,11 +262,10 @@ chooseCard(selectedCard)
 
 function playCard() {
   if (selectedCard.value === '') {
-    console.log('No card selected.')
   } else {
     if (selectedCard.type === cardTypes[0]) {
       if (battlePile.value === 'Green light') {
-        document.querySelector('.error-message').innerText = 'All good.'
+        document.querySelector('.error-message').innerText = 'All good!'
         const tripLog = document.querySelector('.game-log')
         const newLogItem = document.createElement('li')
         newLogItem.appendChild(
@@ -360,7 +356,6 @@ function playCard() {
             'Incorrect remedy - choose another card.'
         }
       }
-      console.log(playerHand)
     }
 
     document.querySelector(
@@ -378,17 +373,14 @@ function playCard() {
 
 const discardCard = () => {
   if (selectedCard.value === '') {
-    console.log('No card selected.')
   } else {
     if (selectedCard.isInPlayerHand) {
       let positionHolder = selectedCard.position
-      console.log('Position of chosen card: ' + positionHolder)
 
       for (i = 0; i < 6; i++) {
         if (parseInt(playerHand[i].position) == selectedCard.position) {
-          console.log('Card to be discarded: ' + playerHand[i].value)
           discardPile.unshift(selectedCard)
-          console.log('Top of discard pile: ', discardPile[0])
+
           cardDraw.position = positionHolder
 
           playerHand.splice(i, 1, cardDraw)
@@ -420,11 +412,9 @@ const discardCard = () => {
       drawCard()
     }
 
-    console.log(turnsRemaining)
-
-    console.log('Hand after discarding: ', JSON.stringify(playerHand))
     gameEnd()
   }
+  document.querySelector('.selected-card').innerText = 'Card selected: '
 }
 
 discardButton.addEventListener('click', discardCard)
@@ -439,18 +429,24 @@ function gameEnd() {
     ).innerText = `Well done! You completed your trip.`
     discardButton.removeEventListener('click', discardCard)
     discardButton.removeEventListener('click', playCard)
+    battlePile.value = 'Red light'
+    selectedCard.value = ''
   } else if (turnsRemaining === 0 && playerScore < 1000) {
     document.querySelector(
       '.message-area'
     ).innerText = `Nice driving, but you needed a little more time to get there.`
     discardButton.removeEventListener('click', discardCard)
     discardButton.removeEventListener('click', playCard)
+    battlePile.value = 'Red light'
+    selectedCard.value = ''
   } else if (turnsRemaining === 0 && playerScore > 1000) {
     document.querySelector(
       '.message-area'
     ).innerText = `Nice driving, but looks like you missed your destination.`
     discardButton.removeEventListener('click', discardCard)
     discardButton.removeEventListener('click', playCard)
+    battlePile.value = 'Red light'
+    selectedCard.value = ''
   }
 }
 gameEnd()

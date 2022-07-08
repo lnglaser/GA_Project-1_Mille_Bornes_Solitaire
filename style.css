@@ -13,7 +13,7 @@ div{
 }
 .container{
     display: grid;
-    
+    grid-template-rows: 3vw;
     
 }
 
@@ -68,6 +68,8 @@ div{
 .score-counter {
     border: 2px solid white;
     width: 20vw;
+    grid-template-rows: 4vw;
+
 }
 
 .turnCount {
