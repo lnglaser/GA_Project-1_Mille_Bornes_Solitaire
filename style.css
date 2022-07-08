@@ -2,20 +2,25 @@
 
 body{
     font-family: 'Racing Sans One', cursive;
-    background-color: aqua;
+    background-color: #BA8C63;
+    color: white;
     /* display:inline-flex;
     align-items: center; */
 }
 
-div .w3-container{
-
+div{
+    margin: 3px;
+}
+.container{
+    display: grid;
+    
     
 }
 
 .player-hand {
     display: flex;
     border: 2px solid black;
-    width: 2fr;
+    width: 50vw;
 }
 
 
@@ -48,10 +53,12 @@ div .w3-container{
     background-color: white;
     text-align: center;
     border-radius: 10%;
+    color: black;
 }
 
 .all-card:hover {
-    background-color: lightpink;
+    background-color: #004225;
+    color: white
 }
 
 .all-card:active {
@@ -60,6 +67,12 @@ div .w3-container{
 
 .score-counter {
     border: 2px solid black;
+    width: 20vw;
+}
+
+.turnCount {
+    border: 2px solid black;
+    width: 20vw;
 }
 
 .w3-container{
@@ -69,23 +82,55 @@ div .w3-container{
 
 .battle-pile {
     border: 2px solid black;
+    width: 20vw;
 }
 
 .selected-card{
     border: 2px solid black;
+    width: 20vw;
 }
 
 button{
     font-family: 'Racing Sans One', cursive;
     width: 10em;
     height: 3em;
-    display: inline;
+    display: block;
 }
 
 .playButton {
-    
+    background-color: lightgreen;
+    margin: 3px;
 }
 
+.playButton:hover {
+    background-color: #004225;
+    color: white
+    ;
+}
+
+.playButton:active {
+    background-color: white;
+    color: #004225
+}
+.discardButton {
+    background-color: lightgoldenrodyellow;
+    margin: 3px;
+}
+
+.discardButton:hover {
+    background-color: darkorange;
+    color: white
+    ;
+}
+
+.discardButton:active {
+    background-color: white;
+    color: darkorange
+    ;
+}
+.game-log{
+    grid-column-start: 1;
+}
 p {
     font-size: 20px;
 }
